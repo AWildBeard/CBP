@@ -1,5 +1,8 @@
 import java.util.GregorianCalendar;
 
+/**
+ * @author Michael Mitchell
+ */
 public class Bot extends Client {
     private String botFileName,
         category,
@@ -7,15 +10,14 @@ public class Bot extends Client {
     private GregorianCalendar dateUpdated;
 
     public Bot() {
-        // I'm lazy
-        this.botFileName = null;
-        this.category = null;
-        this.createdBy = null;
-        this.dateUpdated = null;
+        setBotFileName(null);
+        setCategory(null);
+        setCreatedBy(null);
+        setDate("01/01/1970");
     }
 
-    public Bot(String botFileName, String category, 
-            String createdBy, String date) {
+    public Bot(String clearPassword, String key, String botFileName, 
+            String category, String createdBy, String date) {
         setBotFileName(botFileName);
         setCategory(category);
         setCreatedBy(createdBy);

@@ -1,3 +1,6 @@
+/**
+ * @author Michael Mitchell
+ */
 public class User extends Client {
     private String userName,
         fullName;
@@ -8,6 +11,14 @@ public class User extends Client {
         setUserName(null);
         setFullName(null);
         setDeptCode(0);
+    }
+
+    public User(String clearPassword, String key, String userName, 
+            String fullName, int deptCode) {
+        super(clearPassword, key);
+        setUserName(userName);
+        setFullName(fullName);
+        setDeptCode(deptCode);
     }
 
     // Utility
@@ -39,6 +50,7 @@ public class User extends Client {
     }
 
     public String toString() {
-        return this.fullName + "\t" + this.userName + "\t" + this.deptCode + super.toString();
+        return this.fullName + "\t" + this.userName + "\t" + 
+            this.deptCode + "\t" + super.toString();
     }
 }
