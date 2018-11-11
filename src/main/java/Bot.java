@@ -25,9 +25,15 @@ public class Bot extends Client {
     }
 
     // Utility
+
+    /**
+     * @param date The string date representation
+     * @return A @see java.util.GregorianCalendar object to represent the date.
+     */
     private GregorianCalendar makeDate(String date) {
-        // TODO: Implement
-        return null;
+        return null /*new GregorianCalendar(Integer.parseInt(date.substring(0, 3)),
+                Integer.parseInt(date.substring(4, 6)),
+                Integer.parseInt(date.substring(7)))*/;
     }
 
     // Mutators
@@ -44,7 +50,6 @@ public class Bot extends Client {
     }
 
     public void setDate(String date) {
-        // TODO: Create date obj and assign
         this.dateUpdated = makeDate(date);
     }
 
@@ -62,8 +67,7 @@ public class Bot extends Client {
     }
 
     public String getDate() {
-        // TODO: Return date?
-        return null;
+        return this.dateUpdated.toString();
     }
 
     public String toString() {
