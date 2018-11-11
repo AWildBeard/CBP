@@ -9,9 +9,9 @@ import java.util.List;
  * @author Michael Mitchell
  */
 public class Client {
-    private String clearPassword,
-        encryptedPassword,
-        key;
+    private String clearPassword = null,
+        encryptedPassword = null,
+        key = null;
     private int clientId;
     private static int nextIDNum = 1000;
     private static final int upperAsciiTableBound = 255;
@@ -20,7 +20,7 @@ public class Client {
 
     public Client() {
         setKey("abcd");
-        setClearPassword("P@ssw0rd!");
+        setClearPassword("P#ssw0rd");
         setClientId();
     }
 
@@ -65,13 +65,8 @@ public class Client {
      */
     private String encryptPassword(String clearPassword) {
         StringBuilder encryptedPassword = new StringBuilder(clearPassword.length());
-        int rotationNumber = 0;
 
-        for (final char ch : this.key.toCharArray()) {
-            rotationNumber += (int) ch;
-        }
-
-        rotationNumber = rotationNumber % upperAsciiTableBound;
+        int rotationNumber = generateRotationNumber();
 
         for (final char ch : clearPassword.toCharArray()) {
             char charToAppend = (char) ((int) ch + rotationNumber);
@@ -79,6 +74,28 @@ public class Client {
         }
 
         return encryptedPassword.toString();
+    }
+
+    // Make this a method so that it can be re-used in reversing the 
+    // rotation `encryption` above.
+    private int generateRotationNumber() {
+        int rotationNumber = 0;
+
+        if (this.key == null) 
+            return rotationNumber;
+
+        for (final char ch : this.key.toCharArray()) {
+            rotationNumber += (int) ch;
+        }
+
+        // Incrementally Bitshift. Darn you binary mafs.
+        for (int i = 1; rotationNumber % upperAsciiTableBound == 0 ; i++)
+            // Need to get rotation number away from being a multiple of 255
+            rotationNumber = (rotationNumber + i) >> i; 
+
+        rotationNumber = rotationNumber % upperAsciiTableBound;
+
+        return rotationNumber;
     }
 
     // Mutators
@@ -96,8 +113,12 @@ public class Client {
         this.encryptedPassword = encryptPassword(clearPassword);
     }
 
-    private void setKey(String key) {
+    public void setKey(String key) {
         this.key = key;
+
+        // Check to see if the password has been set yet
+        if (this.clearPassword != null)
+            setEncryptedPassword(this.clearPassword);
     }
 
     public void setClientId() {
