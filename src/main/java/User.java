@@ -8,8 +8,8 @@ public class User extends Client {
 
     public User() {
         // Super is already called
-        setUserName(null);
-        setFullName(null);
+        setUserName("");
+        setFullName("");
         setDeptCode(0);
     }
 

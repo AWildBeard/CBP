@@ -1,30 +1,67 @@
-import org.junit.Test;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
-import static org.junit.Assert.*;
-import java.util.NoSuchElementException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountsTest {
     // @Rule
     // public ExpectedException exception = ExpectedException.none();
 
-    @Test
-    public void getUserReturnsCorrectUser() {
-        User user1 = new User("P#ssw0rd", "abcd", "mmitc", "Michael Mitchell", 1),
-            user2 = new User("Hash#t4g", "defg", "User2", "Blah Blah", 2);
-        Bot bottyBoy = new Bot("Imm4B#t", "hijk", "ReeBot.py", "INeedToDoTHis", "Michael Mitchell", "01/01/1970");
-        Accounts accounts = new Accounts("ACME", "1234 Lost Blvd", user1, user2, bottyBoy);
-        assertEquals(user2, accounts.getUser("User2"));
-        assertEquals(user1, accounts.getUser("mmitc"));
-        assertTrue(accounts.deleteUser("mmitc"));
-        assertFalse(accounts.deleteUser("mmitc"));
-        assertNull(accounts.getUser("mmitc"));
-        assertTrue(accounts.deleteUser("User2"));
-        assertFalse(accounts.deleteUser("User2"));
-        assertNull(accounts.getUser("User2"));
+    private static User user1 = new User("P#ssw0rd", "abcd",
+            "mmitc", "Michael Mitchell", 1),
+            user2 = new User("Hash#t4g", "defg",
+                    "User2", "Blah Blah", 2);
 
-        // Test for exception handling
-        // exception.expect(NoSuchElementException.class);
-        assertNull(accounts.getUser("FAIL!"));
+    private static Bot bottyBoy = new Bot("Imm4B#t", "hijk",
+            "ReeBot.py", "INeedToDoTHis",
+            "Michael Mitchell", "01/01/1970");
+
+    private static Accounts accounts = new Accounts("ACME",
+            "1234 Lost Blvd");
+
+    @BeforeEach
+    public void prepare() {
+        if (! accounts.hasClient(user1.getUserName()) &&
+                ! accounts.hasClient(user2.getUserName()) &&
+                ! accounts.hasClient(bottyBoy.getBotFileName())) {
+            accounts.addClient(user1);
+            accounts.addClient(user2);
+            accounts.addClient(bottyBoy);
+        }
+    }
+
+    @Test
+    public void getClientSuccessful() {
+        // Find those users
+        System.out.println("Testing Accounts::getClient");
+        assertEquals(user1, accounts.getClient(user1.getUserName()));
+        assertEquals(user2, accounts.getClient(user2.getUserName()));
+        assertEquals(bottyBoy, accounts.getClient(bottyBoy.getBotFileName()));
+
+        // Remove the clients to test the null return feature of getClient()
+        deleteClientSuccessful();
+
+        // Test that the user can't be found
+        assertNull(accounts.getClient(user1.getUserName()));
+        assertNull(accounts.getClient(user2.getUserName()));
+        assertNull(accounts.getClient(bottyBoy.getBotFileName()));
+
+        // Test for a user that never existed
+        assertNull(accounts.getClient("FAIL!"));
+    }
+
+    @Test
+    public void deleteClientSuccessful() {
+        // Test deleting users
+        System.out.println("Testing Accounts::deleteClient");
+        assertTrue(accounts.deleteClient(user1.getUserName()));
+        assertTrue(accounts.deleteClient(user2.getUserName()));
+        assertTrue(accounts.deleteClient(bottyBoy.getBotFileName()));
+
+        // Test that the user was deleted
+        assertFalse(accounts.deleteClient(user1.getUserName()));
+        assertFalse(accounts.deleteClient(user2.getUserName()));
+        assertFalse(accounts.deleteClient(bottyBoy.getBotFileName()));
+
     }
 }

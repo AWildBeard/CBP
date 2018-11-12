@@ -15,15 +15,15 @@ public class Accounts {
     private ArrayList<Client> clients;
 
     public Accounts() {
-        setCompanyName(null);
-        setCompanyAddress(null);
-        clients = null;
+        setCompanyName("");
+        setCompanyAddress("");
+        clients = new ArrayList<>();
     }
 
     public Accounts(String companyName, String companyAddress) {
         setCompanyName(companyName);
         setCompanyAddress(companyAddress);
-        this.clients = null;
+        this.clients = new ArrayList<>();
     }
 
     public Accounts(String companyName, String companyAddress, Client... clients) {
@@ -53,26 +53,49 @@ public class Accounts {
         return client instanceof Bot;
     }
 
+    public boolean hasClient(final String name) {
+        return getClient(name) != null;
+    }
+
     /**
-     * @param userName The username of the Client to find the index for
+     * @param name The username of the Client to find the index for
      * @return the index of that client if found. NOTFOUND otherwise.
      */
-    private int getIndex(final String userName) { // I am determined not to write a for loop
+    private int getIndex(final String name) { // I am determined not to write a for loop
         // Generate an intstream that iterates from 0 to the number of clients we have...
         // I just really don't want to write a for loop today :D
         OptionalInt index = IntStream.range(0, this.clients.size()).filter(num -> {
-                // Gonna need this in a bit
                 final Client client = this.clients.get(num);
 
                 // Proven we have a User to call getUserName() on
-                return clientIsAUser(client) && ((User) client).getUserName().equals(userName);
-            }).findFirst();
+                return clientIsAUser(client) && ((User) client).getUserName().equals(name) ||
+                        clientIsABot(client) && ((Bot) client).getBotFileName().equals(name);
+            }).findAny();
 
         if (index.isPresent())
-            // Awww this casts if for us! ^.^
+            // Awww this casts it for us! ^.^
             return index.getAsInt();
 
         return NOTFOUND;
+    }
+
+    // Does Prof Pinto mean User or Client?
+    public void addClient(Client client) {
+        this.clients.add(client);
+    }
+
+    /**
+     * @param name the Username of the user to delete
+     * @return True if the user was successfully deleted. False if the user wasn't
+     */
+    public boolean deleteClient(String name) {
+        int index;
+        if ((index = getIndex(name)) != NOTFOUND) {
+            this.clients.remove(index);
+            return true;
+        }
+
+        return false;
     }
 
     // Mutators
@@ -82,25 +105,6 @@ public class Accounts {
 
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
-    }
-
-    // Does Prof Pinto mean User or Client?
-    public void addClient(Client client) {
-        this.clients.add(client);
-    }
-
-    /**
-     * @param userName the Username of the user to delete
-     * @return True if the user was successfully deleted. False if the user wasn't
-     */
-    public boolean deleteUser(String userName) {
-        int index;
-        if ((index = getIndex(userName)) != NOTFOUND) {
-            this.clients.remove(index);
-            return true;
-        }
-
-        return false;
     }
 
     // Accessors
@@ -113,19 +117,21 @@ public class Accounts {
     }
 
     /**
-     * @param userName The username of the user to find
+     * @param name The username of the user to find
      * @return The user if the user was found. null otherwise.
      */
-    public User getUser(final String userName) {
-        Optional<Client> user = (this.clients.stream().filter(client -> {
-            return clientIsAUser(client) && ((User) client).getUserName().equals(userName);
-        }).findFirst());
+    public Client getClient(final String name) {
+        // Names are unique so it doesn't matter how we do the comparison
+        Optional<Client> client = (this.clients.stream().filter(cli ->
+                clientIsAUser(cli) && ((User) cli).getUserName().equals(name) ||
+                        clientIsABot(cli) && ((Bot) cli).getBotFileName().equals(name)
+        ).findAny());
 
-        if (user.isPresent()) 
+        if (client.isPresent())
             // We already proved above that this is a User :D
-            return (User) user.get();
+            return client.get();
         
-        System.out.println(userName + " does not exist.");
+        System.out.println(name + " does not exist.");
         return null;
     }
 

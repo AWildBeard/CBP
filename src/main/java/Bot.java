@@ -10,9 +10,9 @@ public class Bot extends Client {
     private GregorianCalendar dateUpdated;
 
     public Bot() {
-        setBotFileName(null);
-        setCategory(null);
-        setCreatedBy(null);
+        setBotFileName("");
+        setCategory("");
+        setCreatedBy("");
         setDate("01/01/1970");
     }
 
