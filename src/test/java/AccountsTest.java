@@ -1,3 +1,6 @@
+import clients.Bot;
+import clients.User;
+import clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,17 +10,29 @@ public class AccountsTest {
     // @Rule
     // public ExpectedException exception = ExpectedException.none();
 
-    private static User user1 = new User("P#ssw0rd", "abcd",
-            "mmitc", "Michael Mitchell", 1),
-            user2 = new User("Hash#t4g", "defg",
-                    "User2", "Blah Blah", 2);
+    private static User user1, user2;
 
-    private static Bot bottyBoy = new Bot("Imm4B#t", "hijk",
-            "ReeBot.py", "INeedToDoTHis",
-            "Michael Mitchell", "01/01/1970");
+    private static Bot bottyBoy;
 
     private static Accounts accounts = new Accounts("ACME",
             "1234 Lost Blvd");
+
+    public AccountsTest() {
+        try {
+            bottyBoy = new Bot("Imm4B#ta", "hijk",
+                    "ReeBot.py", "INeedToDoTHis",
+                    "Michael Mitchell", "01/01/1970");
+
+            user1 = new User("P#ssw0rd", "abcd",
+            "mmitc", "Michael Mitchell", 1);
+
+            user2 = new User("Hash#t4g", "defg",
+                    "User2", "Blah Blah", 2);
+        } catch (InvalidPasswordException invalidPassword) {
+            // Do nothing
+        }
+
+    }
 
     @BeforeEach
     public void prepare() {
@@ -33,7 +48,6 @@ public class AccountsTest {
     @Test
     public void getClientSuccessful() {
         // Find those users
-        System.out.println("Testing Accounts::getClient");
         assertEquals(user1, accounts.getClient(user1.getUserName()));
         assertEquals(user2, accounts.getClient(user2.getUserName()));
         assertEquals(bottyBoy, accounts.getClient(bottyBoy.getBotFileName()));
@@ -53,7 +67,6 @@ public class AccountsTest {
     @Test
     public void deleteClientSuccessful() {
         // Test deleting users
-        System.out.println("Testing Accounts::deleteClient");
         assertTrue(accounts.deleteClient(user1.getUserName()));
         assertTrue(accounts.deleteClient(user2.getUserName()));
         assertTrue(accounts.deleteClient(bottyBoy.getBotFileName()));

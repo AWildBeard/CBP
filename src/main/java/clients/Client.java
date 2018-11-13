@@ -1,9 +1,9 @@
-import java.lang.IllegalArgumentException;
+package clients;
+import clients.exceptions.InvalidPasswordException;
+
 import java.lang.StringBuilder;
 import java.util.Arrays;
 import java.util.List;
-
-// Maybe create own IllegalArgumentException?
 
 /**
  * @author Michael Mitchell
@@ -19,12 +19,12 @@ public class Client {
             Arrays.asList('#', '$', '%', '&');
 
     public Client() {
+        this.clearPassword = "P#ssw0rd";
         setKey("abcd");
-        setClearPassword("P#ssw0rd");
         setClientId();
     }
 
-    public Client(String clearPassword, String key) throws IllegalArgumentException {
+    public Client(String clearPassword, String key) throws InvalidPasswordException {
         setKey(key);
         setClearPassword(clearPassword); // Depends on key
         setClientId();
@@ -42,17 +42,15 @@ public class Client {
      * If the password contains a character that does not match the criteria above,
      * it is also considered a bad password and the method will return false.
      */
-    private boolean goodPassword(String clearPassword) {
+    private void goodPassword(String clearPassword) throws InvalidPasswordException {
         if (clearPassword.length() < 8)
-            return false;
+            throw new InvalidPasswordException("The password length must be greater than 8 characters!");
 
         for (final char ch : clearPassword.toCharArray()) {
             if (! Character.isAlphabetic(ch) && ! Character.isDigit(ch) &&
                         ! validSpecialCharacters.stream().anyMatch( c -> c == ch ))
-                return false;
+                throw new InvalidPasswordException("Invalid character in password: " + ch);
         }
-
-        return true;
     }
 
     /** 
@@ -99,13 +97,12 @@ public class Client {
     }
 
     // Mutators
-    public void setClearPassword(String clearPassword) throws IllegalArgumentException {
+    public void setClearPassword(String clearPassword) throws InvalidPasswordException {
         // Will short circuit before causing any trouble in goodPassword
-        if (clearPassword != null && goodPassword(clearPassword)) {
+        if (clearPassword != null) {
+            goodPassword(clearPassword);
             this.clearPassword = clearPassword;
             setEncryptedPassword(clearPassword);
-        } else {
-            throw new IllegalArgumentException("Invalid password!");
         }
     }
 

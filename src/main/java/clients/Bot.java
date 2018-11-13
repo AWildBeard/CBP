@@ -1,3 +1,8 @@
+package clients;
+
+import clients.exceptions.InvalidPasswordException;
+
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
@@ -16,8 +21,17 @@ public class Bot extends Client {
         setDate("01/01/1970");
     }
 
+    /**
+     * @param clearPassword The cleartext password for the bot
+     * @param key The key to use to encode the password for the bot
+     * @param botFileName The filename that the bot is stored in
+     * @param category The category that corresponds to the bot
+     * @param createdBy Who created the bot
+     * @param date The date that the bot was created in DD/MM/YYYY
+     */
     public Bot(String clearPassword, String key, String botFileName, 
-            String category, String createdBy, String date) {
+            String category, String createdBy, String date) throws InvalidPasswordException {
+        super(clearPassword, key);
         setBotFileName(botFileName);
         setCategory(category);
         setCreatedBy(createdBy);
@@ -31,9 +45,12 @@ public class Bot extends Client {
      * @return A @see java.util.GregorianCalendar object to represent the date.
      */
     private GregorianCalendar makeDate(String date) {
-        return null /*new GregorianCalendar(Integer.parseInt(date.substring(0, 3)),
-                Integer.parseInt(date.substring(4, 6)),
-                Integer.parseInt(date.substring(7)))*/;
+        int day = Integer.parseInt(date.substring(0, 2)),
+                month = Integer.parseInt(date.substring(3, 5)),
+                year = Integer.parseInt(date.substring(6));
+
+//        System.out.format("Day: %d Month: %d Year: %d", day, month, year);
+        return new GregorianCalendar(year, month, day);
     }
 
     // Mutators
@@ -67,7 +84,9 @@ public class Bot extends Client {
     }
 
     public String getDate() {
-        return this.dateUpdated.toString();
+        return this.dateUpdated.get(Calendar.DAY_OF_MONTH) + "/" +
+                this.dateUpdated.get(Calendar.MONTH) + "/" +
+                this.dateUpdated.get(Calendar.YEAR);
     }
 
     public String toString() {

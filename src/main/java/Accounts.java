@@ -1,3 +1,7 @@
+import clients.Bot;
+import clients.User;
+import clients.Client;
+
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
@@ -67,7 +71,7 @@ public class Accounts {
         OptionalInt index = IntStream.range(0, this.clients.size()).filter(num -> {
                 final Client client = this.clients.get(num);
 
-                // Proven we have a User to call getUserName() on
+                // Proven we have a clients.User to call getUserName() on
                 return clientIsAUser(client) && ((User) client).getUserName().equals(name) ||
                         clientIsABot(client) && ((Bot) client).getBotFileName().equals(name);
             }).findAny();
@@ -79,7 +83,7 @@ public class Accounts {
         return NOTFOUND;
     }
 
-    // Does Prof Pinto mean User or Client?
+    // Does Prof Pinto mean clients.User or Client?
     public void addClient(Client client) {
         this.clients.add(client);
     }
@@ -128,7 +132,7 @@ public class Accounts {
         ).findAny());
 
         if (client.isPresent())
-            // We already proved above that this is a User :D
+            // We already proved above that this is a clients.User :D
             return client.get();
         
         System.out.println(name + " does not exist.");

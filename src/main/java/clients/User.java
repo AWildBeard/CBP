@@ -1,3 +1,7 @@
+package clients;
+
+import clients.exceptions.InvalidPasswordException;
+
 /**
  * @author Michael Mitchell
  */
@@ -13,8 +17,8 @@ public class User extends Client {
         setDeptCode(0);
     }
 
-    public User(String clearPassword, String key, String userName, 
-            String fullName, int deptCode) {
+    public User(String clearPassword, String key, String userName,
+            String fullName, int deptCode) throws InvalidPasswordException {
         super(clearPassword, key);
         setUserName(userName);
         setFullName(fullName);
