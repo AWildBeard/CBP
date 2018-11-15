@@ -1,5 +1,6 @@
 import clients.Bot;
 import clients.User;
+import clients.exceptions.InvalidBotCategoryException;
 import clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class AccountsTest {
     public AccountsTest() {
         try {
             bottyBoy = new Bot("Imm4B#ta", "hijk",
-                    "ReeBot.py", "INeedToDoTHis",
+                    "ReeBot.py", "IDS",
                     "Michael Mitchell", "01/01/1970");
 
             user1 = new User("P#ssw0rd", "abcd",
@@ -28,7 +29,7 @@ public class AccountsTest {
 
             user2 = new User("Hash#t4g", "defg",
                     "User2", "Blah Blah", 2);
-        } catch (InvalidPasswordException invalidPassword) {
+        } catch (InvalidPasswordException | InvalidBotCategoryException e) {
             // Do nothing
         }
 

@@ -1,9 +1,12 @@
 package clients;
 
+import clients.exceptions.InvalidBotCategoryException;
 import clients.exceptions.InvalidPasswordException;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * @author Michael Mitchell
@@ -13,10 +16,11 @@ public class Bot extends Client {
         category,
         createdBy;
     private GregorianCalendar dateUpdated;
+    public static List<String> validCategories = Arrays.asList("IDS", "SysAdm", "HelpDesk");
 
     public Bot() {
         setBotFileName("");
-        setCategory("");
+        this.category = "IDS";
         setCreatedBy("");
         setDate("01/01/1970");
     }
@@ -30,7 +34,9 @@ public class Bot extends Client {
      * @param date The date that the bot was created in DD/MM/YYYY
      */
     public Bot(String clearPassword, String key, String botFileName, 
-            String category, String createdBy, String date) throws InvalidPasswordException {
+            String category, String createdBy, String date)
+            throws InvalidPasswordException, InvalidBotCategoryException,
+            NumberFormatException {
         super(clearPassword, key);
         setBotFileName(botFileName);
         setCategory(category);
@@ -44,7 +50,7 @@ public class Bot extends Client {
      * @param date The string date representation
      * @return A @see java.util.GregorianCalendar object to represent the date.
      */
-    private GregorianCalendar makeDate(String date) {
+    private GregorianCalendar makeDate(String date) throws NumberFormatException {
         int day = Integer.parseInt(date.substring(0, 2)),
                 month = Integer.parseInt(date.substring(3, 5)),
                 year = Integer.parseInt(date.substring(6));
@@ -58,15 +64,18 @@ public class Bot extends Client {
         this.botFileName = botFileName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategory(String category) throws InvalidBotCategoryException {
+        if (validCategories.contains(category))
+            this.category = category;
+        else
+            throw new InvalidBotCategoryException("Category: " + category + " is not a valid category!");
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    public void setDate(String date) {
+    public void setDate(String date) throws NumberFormatException {
         this.dateUpdated = makeDate(date);
     }
 

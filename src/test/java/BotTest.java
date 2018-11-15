@@ -1,4 +1,5 @@
 import clients.Bot;
+import clients.exceptions.InvalidBotCategoryException;
 import clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +11,9 @@ public class BotTest {
     public BotTest() {
         try {
             bottyBoy = new Bot("Imm4B#ta", "hijk",
-                    "ReeBot.py", "INeedToDoTHis",
+                    "ReeBot.py", "IDS",
                     "Michael Mitchell", "01/04/1970");
-        } catch (InvalidPasswordException invalidPassword) {
+        } catch (InvalidPasswordException | InvalidBotCategoryException e) {
             // Do nothing
         }
     }
