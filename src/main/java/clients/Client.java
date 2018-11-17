@@ -18,6 +18,12 @@ public class Client {
     private static final List<Character> validSpecialCharacters = 
             Arrays.asList('#', '$', '%', '&');
 
+    // Expose how this class reports its toString data
+    public static final int maxFieldLength = 20;
+    public static final String toStringHeaders[] = {"Enc Pass", "Clear Pass", "Client ID"};
+    public static final String toStringFormat = "%-" + maxFieldLength + "s\t%-" +
+            maxFieldLength + "s\t%-" + maxFieldLength + "s";
+
     public Client() {
         this.clearPassword = "P#ssw0rd";
         setKey("abcd");
@@ -44,7 +50,8 @@ public class Client {
      */
     private void goodPassword(String clearPassword) throws InvalidPasswordException {
         if (clearPassword.length() < 8)
-            throw new InvalidPasswordException("The password length must be greater than 8 characters!");
+            throw new InvalidPasswordException("The password length must be " +
+                    "greater than 8 characters!");
 
         for (final char ch : clearPassword.toCharArray()) {
             if (! Character.isAlphabetic(ch) && ! Character.isDigit(ch) &&
@@ -140,7 +147,8 @@ public class Client {
     }
 
     public String toString() {
-        return this.encryptedPassword + "\t" + this.clearPassword + "\t" + this.clientId;
+        return String.format(toStringFormat, this.encryptedPassword,
+                this.clearPassword, this.clientId);
     }
 
 }

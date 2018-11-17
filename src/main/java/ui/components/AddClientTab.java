@@ -24,15 +24,14 @@ public class AddClientTab extends JPanel {
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.insets = new Insets(10, 20, 10, 10);
+        constraints.insets = new Insets(10, 30, 10, 30);
         this.add(clientTypeSelector, constraints);
 
         JButton submitButton = new JButton("Submit");
 
         constraints.fill = GridBagConstraints.NONE;
-        constraints.gridx = 3;
+        constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.insets = new Insets(10, 10, 10, 20);
         this.add(submitButton, constraints);
 
         JPanel clientTabCards = new JPanel(new CardLayout());
@@ -176,7 +175,8 @@ public class AddClientTab extends JPanel {
 
                     // Catch individually so we can do custom error messages.
                 } catch (NumberFormatException numberException) {
-                    JOptionPane.showMessageDialog(this, "That is an invalid date!",
+                    JOptionPane.showMessageDialog(this, "That is an invalid date!" +
+                                    "\nThe date must be in the format of DD/MM/YYYY",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (InvalidBotCategoryException invalidCategory) {
@@ -207,12 +207,11 @@ public class AddClientTab extends JPanel {
         clientTabCards.add(userCard, "User");
         clientTabCards.add(botCard, "Bot");
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 1;
+        constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 5;
         constraints.weightx = 0.1;
         constraints.anchor = GridBagConstraints.PAGE_END;
-        constraints.insets = new Insets(10, 10, 10, 10);
         this.add(clientTabCards, constraints);
     }
 

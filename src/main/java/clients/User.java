@@ -10,6 +10,11 @@ public class User extends Client {
         fullName;
     private int deptCode;
 
+    // Expose how this class reports its toString data
+    public static final String toStringHeaders[] = {"Full Name", "User Name", "Dept Code"};
+    public static final String toStringFormat = "%-" + maxFieldLength + "s\t%-" +
+            maxFieldLength + "s\t%-" + maxFieldLength + "s";
+
     public User() {
         // Super is already called
         setUserName("");
@@ -54,7 +59,7 @@ public class User extends Client {
     }
 
     public String toString() {
-        return this.fullName + "\t" + this.userName + "\t" + 
-            this.deptCode + "\t" + super.toString();
+        return String.format(toStringFormat, this.fullName,
+                this.userName, this.deptCode) + super.toString() + "\n";
     }
 }

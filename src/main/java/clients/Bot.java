@@ -18,6 +18,12 @@ public class Bot extends Client {
     private GregorianCalendar dateUpdated;
     public static List<String> validCategories = Arrays.asList("IDS", "SysAdm", "HelpDesk");
 
+    // Expose how this class reports its toString data
+    public static final String toStringHeaders[] = {"Bot Name", "Category",
+            "Creation Date", "Author"};
+    public static final String toStringFormat = "%-" + maxFieldLength + "s\t%-" +
+            maxFieldLength + "s\t%-" + maxFieldLength + "s\t%-" + maxFieldLength + "s";
+
     public Bot() {
         setBotFileName("");
         this.category = "IDS";
@@ -68,7 +74,8 @@ public class Bot extends Client {
         if (validCategories.contains(category))
             this.category = category;
         else
-            throw new InvalidBotCategoryException("Category: " + category + " is not a valid category!");
+            throw new InvalidBotCategoryException("Category: " + category +
+                    " is not a valid category!");
     }
 
     public void setCreatedBy(String createdBy) {
@@ -99,7 +106,7 @@ public class Bot extends Client {
     }
 
     public String toString() {
-        return this.botFileName + "\t" + this.category + 
-            "\t" + getDate() + "\t" + this.createdBy + super.toString();
+        return String.format(toStringFormat, this.botFileName, this.category,
+                getDate(), this.createdBy) + super.toString();
     }
 }
