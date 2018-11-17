@@ -1,3 +1,6 @@
+package ui.components;
+
+import clients.Accounts;
 import clients.Bot;
 import clients.User;
 import clients.exceptions.InvalidBotCategoryException;
@@ -6,44 +9,9 @@ import clients.exceptions.InvalidPasswordException;
 import javax.swing.*;
 import java.awt.*;
 
-public class AccountTester extends JFrame {
-    private JTabbedPane mainScene;
-    private static Accounts accounts;
-
-    public static void main(String[] args) {
-        accounts = new Accounts();
-        AccountTester mainStage = new AccountTester();
-
-        mainStage.setVisible(true);
-    }
-
-    public AccountTester() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000, 600);
-        mainScene = new JTabbedPane();
-
-        mainScene.addTab("Add a Client", createClientTab());
-        mainScene.addTab("Find a Client", createFiller("This is Find Client Space"));
-        mainScene.addTab("Delete a Client", createFiller("This is Delete Client Space"));
-        mainScene.addTab("Current Accounts", createFiller("This is Current Accounts Space"));
-
-        this.add(mainScene);
-    }
-
-    private JComponent createFiller(String filler) {
-        JLabel label = new JLabel(filler);
-        label.setHorizontalAlignment(JLabel.CENTER);
-
-        JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout(1, 1));
-
-        panel.add(label);
-
-        return panel;
-    }
-
-    private JComponent createClientTab() {
-        JPanel panel = new JPanel(new GridBagLayout());
+public class AddClientTab extends JPanel {
+    public AddClientTab(Accounts accounts) {
+        super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
         JComboBox<String> clientTypeSelector = new JComboBox<>();
@@ -56,17 +24,16 @@ public class AccountTester extends JFrame {
         constraints.fill = GridBagConstraints.NONE;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(10, 30, 10, 30);
-        panel.add(clientTypeSelector, constraints);
+        constraints.insets = new Insets(10, 20, 10, 10);
+        this.add(clientTypeSelector, constraints);
 
         JButton submitButton = new JButton("Submit");
 
         constraints.fill = GridBagConstraints.NONE;
-        constraints.gridx = 1;
+        constraints.gridx = 3;
         constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.EAST;
-        panel.add(submitButton, constraints);
+        constraints.insets = new Insets(10, 10, 10, 20);
+        this.add(submitButton, constraints);
 
         JPanel clientTabCards = new JPanel(new CardLayout());
 
@@ -155,20 +122,20 @@ public class AccountTester extends JFrame {
                         }
                     }
 
-                // Catch individually so we can do custom error messages
+                    // Catch individually so we can do custom error messages
                 } catch (NumberFormatException numberException) {
-                    JOptionPane.showMessageDialog(mainScene, "That is an invalid Department Code!",
+                    JOptionPane.showMessageDialog(this, "That is an invalid Department Code!",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (InvalidPasswordException invalidPassword) {
-                    JOptionPane.showMessageDialog(mainScene, "Invalid password! " +
+                    JOptionPane.showMessageDialog(this, "Invalid password! " +
                                     "Make sure that the password is at least 8 characters,\n" +
                                     "contains a letter, contains a number, and contains any of " +
                                     "the following characters: # $ % &",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (IllegalArgumentException illegalArgument) {
-                    JOptionPane.showMessageDialog(mainScene, illegalArgument.getMessage(),
+                    JOptionPane.showMessageDialog(this, illegalArgument.getMessage(),
                             illegalArgument.getMessage(), JOptionPane.ERROR_MESSAGE);
 
                 } finally {
@@ -207,23 +174,23 @@ public class AccountTester extends JFrame {
                         }
                     }
 
-                // Catch individually so we can do custom error messages.
+                    // Catch individually so we can do custom error messages.
                 } catch (NumberFormatException numberException) {
-                    JOptionPane.showMessageDialog(mainScene, "That is an invalid date!",
+                    JOptionPane.showMessageDialog(this, "That is an invalid date!",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (InvalidBotCategoryException invalidCategory) {
-                    JOptionPane.showMessageDialog(mainScene, "That is an invalid bot category!",
+                    JOptionPane.showMessageDialog(this, "That is an invalid bot category!",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (InvalidPasswordException invalidPassword) {
-                    JOptionPane.showMessageDialog(mainScene, "Invalid password! " +
+                    JOptionPane.showMessageDialog(this, "Invalid password! " +
                                     "Make sure that the password is at least 8 characters,\n" +
                                     "contains a letter, contains a number, and contains any of " +
                                     "the following characters: # $ % &",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException illegalArgument) {
-                    JOptionPane.showMessageDialog(mainScene, illegalArgument.getMessage(),
+                    JOptionPane.showMessageDialog(this, illegalArgument.getMessage(),
                             illegalArgument.getMessage(), JOptionPane.ERROR_MESSAGE);
 
                 } finally {
@@ -239,16 +206,14 @@ public class AccountTester extends JFrame {
 
         clientTabCards.add(userCard, "User");
         clientTabCards.add(botCard, "Bot");
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
         constraints.gridy = 1;
         constraints.gridwidth = 2;
-        constraints.gridheight = 2;
         constraints.weightx = 0.1;
         constraints.anchor = GridBagConstraints.PAGE_END;
-        panel.add(clientTabCards, constraints);
-
-        return panel;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        this.add(clientTabCards, constraints);
     }
 
     private JLabel createLabel(String content) {

@@ -1,6 +1,4 @@
-import clients.Bot;
-import clients.User;
-import clients.Client;
+package clients;
 
 import java.util.stream.Stream;
 import java.util.stream.Collectors;

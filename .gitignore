@@ -4,3 +4,5 @@ build/
 *.iml
 *.iws
 *.class
+*.sublime-project
+*.sublime-workspace

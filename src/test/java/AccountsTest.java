@@ -1,3 +1,4 @@
+import clients.Accounts;
 import clients.Bot;
 import clients.User;
 import clients.exceptions.InvalidBotCategoryException;
