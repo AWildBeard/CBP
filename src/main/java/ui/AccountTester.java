@@ -2,6 +2,8 @@ package ui;
 
 import clients.Accounts;
 import ui.components.AddClientTab;
+import ui.components.CurrentAccountsTab;
+import ui.components.DeleteClientTab;
 import ui.components.FindClientTab;
 
 import javax.swing.*;
@@ -25,8 +27,8 @@ public class AccountTester extends JFrame {
 
         mainScene.addTab("Add a Client", new AddClientTab(accounts));
         mainScene.addTab("Find a Client", new FindClientTab(accounts));
-        mainScene.addTab("Delete a Client", createFiller("This is Delete Client Space"));
-        mainScene.addTab("Current Accounts", createFiller("This is Current clients.Accounts Space"));
+        mainScene.addTab("Delete a Client", new DeleteClientTab(accounts));
+        mainScene.addTab("Current Accounts", new CurrentAccountsTab(accounts));
 
         this.add(mainScene);
     }

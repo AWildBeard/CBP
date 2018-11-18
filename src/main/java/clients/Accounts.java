@@ -141,22 +141,24 @@ public class Accounts {
         StringBuilder userString = new StringBuilder(),
             botString = new StringBuilder();
 
-        userString.append("Username\tEncryPass\tClearPass\tKey\n");
-        botString.append("FileName\tEncyPass\tClearPass\tKey\n");
+        userString.append(String.format(User.toStringFormat, (Object[]) User.toStringHeaders));
+        userString.append(String.format(Client.toStringFormat, (Object[]) Client.toStringHeaders));
+        userString.append("\n");
+
+        botString.append(String.format(Bot.toStringFormat, (Object[]) Bot.toStringHeaders));
+        botString.append(String.format(Client.toStringFormat, (Object[]) Client.toStringHeaders));
+        botString.append("\n");
+
         // Fine I'll use a for loop gosh!
         for (final Client client : this.clients) {
             if (clientIsAUser(client)) {
                 final User user = (User) client;
-                userString.append(user.getUserName() + "\t" +
-                        user.getEncryptedPassword() + "\t" + 
-                        user.getClearPassword() + "\t" + 
-                        user.getKey());
+                userString.append(user.toString());
+                userString.append("\n");
             } else {
                 final Bot bot = (Bot) client;
-                botString.append(bot.getBotFileName() + "\t" +
-                        bot.getEncryptedPassword() + "\t" +
-                        bot.getClearPassword() + "\t" + 
-                        bot.getKey());
+                botString.append(bot.toString());
+                botString.append("\n");
             }
         }
 

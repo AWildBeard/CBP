@@ -19,7 +19,7 @@ public class Client {
             Arrays.asList('#', '$', '%', '&');
 
     // Expose how this class reports its toString data
-    public static final int maxFieldLength = 20;
+    public static final int maxFieldLength = 25;
     public static final String toStringHeaders[] = {"Enc Pass", "Clear Pass", "Client ID"};
     public static final String toStringFormat = "%-" + maxFieldLength + "s\t%-" +
             maxFieldLength + "s\t%-" + maxFieldLength + "s";
