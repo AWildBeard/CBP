@@ -2,12 +2,12 @@ package cbp.ui.components;
 
 import cbp.clients.Accounts;
 import cbp.util.CBPFile;
+import cbp.util.Option;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 public class CurrentAccountsTab extends JPanel {
     public CurrentAccountsTab(Accounts accounts) {
@@ -44,16 +44,24 @@ public class CurrentAccountsTab extends JPanel {
 
             if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
+                    Option<Boolean> showingErrorMessage = new Option<>(Boolean.FALSE);
+
                     CBPFile newFile = new CBPFile(fileChooser.getSelectedFile().getPath());
-                    newFile.clients().forEach(accounts::addClient);
+                    newFile.clients().forEach(optionalClient -> {
+                        if (! optionalClient.hasValue()) {
+                            if (! showingErrorMessage.getValue()) {
+                                showingErrorMessage.setValue(Boolean.TRUE);
+                                JOptionPane.showMessageDialog(this, "Failed to parse some lines of CBP file",
+                                        "Failed to parse", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            accounts.addClient(optionalClient.getValue());
+                        }
+                    });
                 } catch (IOException error) {
                     JOptionPane.showMessageDialog(this, String.format("Failed to open file \"%s\"",
                             fileChooser.getSelectedFile().getName()), "Failed to open file",
                             JOptionPane.ERROR_MESSAGE);
-                } catch (RuntimeException runtimeException) {
-                    JOptionPane.showMessageDialog(this, runtimeException.getMessage(),
-                            runtimeException.getMessage(), JOptionPane.ERROR_MESSAGE);
-
                 } finally {
                         refreshButton.doClick();
                 }

@@ -6,7 +6,6 @@ import cbp.clients.User;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.stream.Stream;
@@ -44,7 +43,7 @@ public class CBPFile extends File {
         super(path);
     }
 
-    private boolean verifyLine(String line) {
+    private static boolean verifyLine(String line) {
         if (! isUser(line) && ! isBot(line))
             return false;
 
@@ -72,9 +71,9 @@ public class CBPFile extends File {
         return true;
     }
 
-    private boolean isUser(String line) { return line.charAt(0) == 'u'; }
+    private static boolean isUser(String line) { return line.charAt(0) == 'u'; }
 
-    private boolean isBot(String line) { return line.charAt(0) == 'b'; }
+    private static boolean isBot(String line) { return line.charAt(0) == 'b'; }
     // File format "u,"mmitc","Michael Mitchell","P#ssw0rd","secret",10
     // File format "b,"ReeBoi.py","Michael Mitchell","P#ssw0rd","secret","IDS","01/01/1970"
 
@@ -83,7 +82,7 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private String getName(String line) {
+    private static String getName(String line) {
         int firstComma = line.indexOf(',');
         return line.substring(firstComma + 2, line.indexOf(',', firstComma + 1) - 1);
 
@@ -94,7 +93,8 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private String getFullName(String line) {
+    private static String getFullName(String line) {
+        // #lazy
         int firstComma = line.indexOf(',', line.indexOf(',') + 1);
         return line.substring(firstComma + 2, line.indexOf(',', firstComma + 1) - 1);
     }
@@ -104,8 +104,10 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private String getClearPassword(String line) {
-        return "UNIMPLEMENTED";
+    private static String getClearPassword(String line) {
+        // #lazy
+        int firstComma = line.indexOf(',', line.indexOf(',', line.indexOf(',') + 1) + 1);
+        return line.substring(firstComma + 2 , line.indexOf(',', firstComma + 1) - 1);
     }
 
     /**
@@ -113,8 +115,13 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private String getKey(String line) {
-        return "UNIMPLEMENTED";
+    private static String getKey(String line) {
+        // #lazy
+        int firstComma = line.indexOf(',',
+                line.indexOf(',',
+                        line.indexOf(',',
+                                line.indexOf(',') + 1) + 1) + 1);
+        return line.substring(firstComma + 2, line.indexOf(',', firstComma + 1) - 1);
     }
 
     /**
@@ -122,17 +129,14 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private int getDeptCode(String line) {
-        return 0;
-    }
+    private static int getDeptCode(String line) {
+        int firstComma = line.indexOf(',',
+                line.indexOf(',',
+                        line.indexOf(',',
+                                line.indexOf(',',
+                                        line.indexOf(',') + 1) + 1) + 1) + 1);
+        return Integer.valueOf(line.substring(firstComma + 1));
 
-    /**
-     * This function will return the creation date field for a Bot entry
-     * @param line
-     * @return
-     */
-    private String getDate(String line) {
-        return "UNIMPLEMENTED";
     }
 
     /**
@@ -140,8 +144,28 @@ public class CBPFile extends File {
      * @param line
      * @return
      */
-    private String getCategory(String line) {
-        return "UNIMPLEMENTED";
+    private static String getCategory(String line) {
+        int firstComma = line.indexOf(',',
+                line.indexOf(',',
+                        line.indexOf(',',
+                                line.indexOf(',',
+                                        line.indexOf(',') + 1) + 1) + 1) + 1);
+        return line.substring(firstComma + 2, line.indexOf(',', firstComma + 1) - 1);
+    }
+
+    /**
+     * This function will return the creation date field for a Bot entry
+     * @param line
+     * @return
+     */
+    private static String getDate(String line) {
+        int firstComma = line.indexOf(',',
+                line.indexOf(',',
+                        line.indexOf(',',
+                                line.indexOf(',',
+                                        line.indexOf(',',
+                                                line.indexOf(',') + 1) + 1) + 1) + 1) + 1);
+        return line.substring(firstComma + 2, line.length() - 2);
     }
 
     /**
@@ -150,23 +174,34 @@ public class CBPFile extends File {
      * @throws IOException If there was a problem opening the file
      * @throws RuntimeException If there was a problem with the contents of the files entries
      */
-    public Stream<Client> clients() throws IOException, RuntimeException {
-        return Files.lines(FileSystems.getDefault().getPath(this.getPath())).map(line -> {
-            if (!verifyLine(line))
-                throw new RuntimeException(new IOException("Invalid line format for CBP File!"));
-            else {
-                try {
-                    System.out.println(getName(line));
-                    System.out.println(getFullName(line));
-                    if (isUser(line))
-                        return new User();
-                    else
-                        return new Bot();
-                } catch(Exception e) {
-                    // Don't throw checked exceptions because we want to parse the whole file, not stop early.
-                    throw new RuntimeException(e);
+    public Stream<Option<Client>> clients() throws IOException {
+        return Files.lines(FileSystems.getDefault().getPath(this.getPath())).map(CBPFile::parseLine);
+    }
+
+    static private Option<Client> parseLine(String line) {
+        if (!verifyLine(line))
+            return new Option<>(null);
+        else {
+            try {
+                System.out.println(getName(line));
+                System.out.println(getFullName(line));
+                System.out.println(getClearPassword(line));
+                System.out.println(getKey(line));
+                if (isUser(line)) {
+                    System.out.println(getDeptCode(line));
+                    return new Option<>(new User(getClearPassword(line), getKey(line),
+                            getName(line), getFullName(line), getDeptCode(line)));
+                } else {
+                    System.out.println(getCategory(line));
+                    System.out.println(getDate(line));
+                    return new Option<>(new Bot(getClearPassword(line), getKey(line),
+                            getName(line), getCategory(line), getFullName(line), getDate(line)));
                 }
+            } catch(Exception e) {
+                // Don't throw exceptions because we want to parse the whole file, not stop early.
+                return new Option<>(null);
             }
-        });
+        }
+
     }
 }

@@ -54,7 +54,7 @@ public class AccountsTest {
         assertEquals(user2, accounts.getClient(user2.getUserName()));
         assertEquals(bottyBoy, accounts.getClient(bottyBoy.getBotFileName()));
 
-        // Remove the cbp.clients to test the null return feature of getClient()
+        // Remove the cbp.clients to test the null return feature of getValue()
         deleteClientSuccessful();
 
         // Test that the user can't be found
