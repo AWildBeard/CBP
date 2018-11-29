@@ -1,4 +1,4 @@
-package clients.exceptions;
+package cbp.clients.exceptions;
 
 public class InvalidBotCategoryException extends Exception {
 

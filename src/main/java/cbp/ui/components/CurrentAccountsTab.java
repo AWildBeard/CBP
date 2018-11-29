@@ -1,16 +1,13 @@
-package ui.components;
+package cbp.ui.components;
 
-import clients.Accounts;
-import javafx.stage.FileChooser;
+import cbp.clients.Accounts;
+import cbp.util.CBPFile;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.UncheckedIOException;
 
 public class CurrentAccountsTab extends JPanel {
     public CurrentAccountsTab(Accounts accounts) {
@@ -41,19 +38,25 @@ public class CurrentAccountsTab extends JPanel {
 
         readFileButton.addActionListener(action -> {
             JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter extFilter = new FileNameExtensionFilter("CBP Data files", "cbp");
+            FileNameExtensionFilter extFilter = new FileNameExtensionFilter("CBP Data files",
+                    "cbp");
             fileChooser.setFileFilter(extFilter);
 
             if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    Files.lines(FileSystems.getDefault().getPath(fileChooser.getSelectedFile().getPath())).forEach(fileLine -> {
-                        // TODO: Implement
-                    });
-                } catch (IOException e) {
+                    CBPFile newFile = new CBPFile(fileChooser.getSelectedFile().getPath());
+                    newFile.clients().forEach(accounts::addClient);
+                } catch (IOException error) {
                     JOptionPane.showMessageDialog(this, String.format("Failed to open file \"%s\"",
-                            "Failed to open file", JOptionPane.ERROR_MESSAGE));
-                }
+                            fileChooser.getSelectedFile().getName()), "Failed to open file",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (RuntimeException runtimeException) {
+                    JOptionPane.showMessageDialog(this, runtimeException.getMessage(),
+                            runtimeException.getMessage(), JOptionPane.ERROR_MESSAGE);
 
+                } finally {
+                        refreshButton.doClick();
+                }
             }
         });
 

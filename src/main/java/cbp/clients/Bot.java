@@ -1,7 +1,7 @@
-package clients;
+package cbp.clients;
 
-import clients.exceptions.InvalidBotCategoryException;
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.exceptions.InvalidBotCategoryException;
+import cbp.clients.exceptions.InvalidPasswordException;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -40,9 +40,8 @@ public class Bot extends Client {
      * @param date The date that the bot was created in DD/MM/YYYY
      */
     public Bot(String clearPassword, String key, String botFileName, 
-            String category, String createdBy, String date)
-            throws InvalidPasswordException, InvalidBotCategoryException,
-            NumberFormatException {
+            String category, String createdBy, String date) throws InvalidPasswordException,
+            InvalidBotCategoryException, NumberFormatException {
         super(clearPassword, key);
         setBotFileName(botFileName);
         setCategory(category);

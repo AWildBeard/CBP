@@ -1,5 +1,5 @@
-package clients;
-import clients.exceptions.InvalidPasswordException;
+package cbp.clients;
+import cbp.clients.exceptions.InvalidPasswordException;
 
 import java.lang.StringBuilder;
 import java.util.Arrays;

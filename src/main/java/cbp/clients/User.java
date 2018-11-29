@@ -1,6 +1,6 @@
-package clients;
+package cbp.clients;
 
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.exceptions.InvalidPasswordException;
 
 /**
  * @author Michael Mitchell

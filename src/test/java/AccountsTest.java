@@ -1,8 +1,8 @@
-import clients.Accounts;
-import clients.Bot;
-import clients.User;
-import clients.exceptions.InvalidBotCategoryException;
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.Accounts;
+import cbp.clients.Bot;
+import cbp.clients.User;
+import cbp.clients.exceptions.InvalidBotCategoryException;
+import cbp.clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +54,7 @@ public class AccountsTest {
         assertEquals(user2, accounts.getClient(user2.getUserName()));
         assertEquals(bottyBoy, accounts.getClient(bottyBoy.getBotFileName()));
 
-        // Remove the clients to test the null return feature of getClient()
+        // Remove the cbp.clients to test the null return feature of getClient()
         deleteClientSuccessful();
 
         // Test that the user can't be found

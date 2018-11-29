@@ -1,9 +1,9 @@
-package ui.components;
+package cbp.ui.components;
 
-import clients.Accounts;
-import clients.Bot;
-import clients.Client;
-import clients.User;
+import cbp.clients.Accounts;
+import cbp.clients.Bot;
+import cbp.clients.Client;
+import cbp.clients.User;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
-import clients.Bot;
-import clients.exceptions.InvalidBotCategoryException;
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.Bot;
+import cbp.clients.exceptions.InvalidBotCategoryException;
+import cbp.clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,10 +1,10 @@
-package ui.components;
+package cbp.ui.components;
 
-import clients.Accounts;
-import clients.Bot;
-import clients.User;
-import clients.exceptions.InvalidBotCategoryException;
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.Accounts;
+import cbp.clients.Bot;
+import cbp.clients.User;
+import cbp.clients.exceptions.InvalidBotCategoryException;
+import cbp.clients.exceptions.InvalidPasswordException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +63,7 @@ public class AddClientTab extends JPanel {
 
         // Bot Card
         JComboBox<String> categoryChooser = new JComboBox<>();
-        Bot.validCategories.forEach(string -> categoryChooser.addItem((String) string));
+        Bot.validCategories.forEach(categoryChooser::addItem);
 
         botCard.add(createLabel("Bot File Name"));
         botCard.add(createLabel("Bot Category"));
@@ -123,7 +123,8 @@ public class AddClientTab extends JPanel {
 
                     // Catch individually so we can do custom error messages
                 } catch (NumberFormatException numberException) {
-                    JOptionPane.showMessageDialog(this, "That is an invalid Department Code!",
+                    JOptionPane.showMessageDialog(this,
+                            "That is an invalid Department Code!",
                             "Invalid Bot Category", JOptionPane.ERROR_MESSAGE);
 
                 } catch (InvalidPasswordException invalidPassword) {

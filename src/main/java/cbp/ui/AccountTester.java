@@ -1,10 +1,10 @@
-package ui;
+package cbp.ui;
 
-import clients.Accounts;
-import ui.components.AddClientTab;
-import ui.components.CurrentAccountsTab;
-import ui.components.DeleteClientTab;
-import ui.components.FindClientTab;
+import cbp.clients.Accounts;
+import cbp.ui.components.AddClientTab;
+import cbp.ui.components.CurrentAccountsTab;
+import cbp.ui.components.DeleteClientTab;
+import cbp.ui.components.FindClientTab;
 
 import javax.swing.*;
 import java.awt.*;

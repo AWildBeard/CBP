@@ -1,5 +1,5 @@
-import clients.Client;
-import clients.exceptions.InvalidPasswordException;
+import cbp.clients.Client;
+import cbp.clients.exceptions.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
