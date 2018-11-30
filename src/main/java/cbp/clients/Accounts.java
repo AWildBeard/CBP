@@ -81,9 +81,16 @@ public class Accounts {
         return NOTFOUND;
     }
 
-    // Does Prof Pinto mean cbp.clients.User or Client?
     public void addClient(Client client) {
-        this.clients.add(client);
+        if (clientIsAUser(client)) // Is the client a user?
+            if (! hasClient(((User)client).getUserName()))
+                this.clients.add(client);
+        else if (clientIsABot(client)) {// Client is a bot
+            if (!hasClient(((Bot) client).getBotFileName()))
+                this.clients.add(client);
+        } else
+                System.out.println("ERROR!");
+
     }
 
     /**

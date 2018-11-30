@@ -165,7 +165,7 @@ public class CBPFile extends File {
                                 line.indexOf(',',
                                         line.indexOf(',',
                                                 line.indexOf(',') + 1) + 1) + 1) + 1) + 1);
-        return line.substring(firstComma + 2, line.length() - 2);
+        return line.substring(firstComma + 2, line.length() - 1);
     }
 
     /**
