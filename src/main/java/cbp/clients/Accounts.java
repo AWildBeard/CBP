@@ -82,14 +82,11 @@ public class Accounts {
     }
 
     public void addClient(Client client) {
-        if (clientIsAUser(client)) // Is the client a user?
-            if (! hasClient(((User)client).getUserName()))
-                this.clients.add(client);
-        else if (clientIsABot(client)) {// Client is a bot
-            if (!hasClient(((Bot) client).getBotFileName()))
-                this.clients.add(client);
-        } else
-                System.out.println("ERROR!");
+        if (clientIsAUser(client) && !hasClient(((User)client).getUserName())) // Is the client a user?
+            this.clients.add(client);
+
+        else if (clientIsABot(client) && !hasClient(((Bot) client).getBotFileName())) // Client is a bot
+            this.clients.add(client);
 
     }
 

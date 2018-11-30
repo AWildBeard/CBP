@@ -183,22 +183,17 @@ public class CBPFile extends File {
             return new Option<>(null);
         else {
             try {
-                System.out.println(getName(line));
-                System.out.println(getFullName(line));
-                System.out.println(getClearPassword(line));
-                System.out.println(getKey(line));
                 if (isUser(line)) {
-                    System.out.println(getDeptCode(line));
                     return new Option<>(new User(getClearPassword(line), getKey(line),
                             getName(line), getFullName(line), getDeptCode(line)));
                 } else {
-                    System.out.println(getCategory(line));
-                    System.out.println(getDate(line));
                     return new Option<>(new Bot(getClearPassword(line), getKey(line),
                             getName(line), getCategory(line), getFullName(line), getDate(line)));
                 }
             } catch(Exception e) {
                 // Don't throw exceptions because we want to parse the whole file, not stop early.
+                e.printStackTrace();
+                System.out.println(e.getMessage());
                 return new Option<>(null);
             }
         }

@@ -57,14 +57,6 @@ public class CurrentAccountsTab extends JPanel {
                                         "Failed to parse", JOptionPane.ERROR_MESSAGE);
                             }
                         } else {
-                            Object value = optionalClient.getValue();
-                            if (value instanceof Bot)
-                                System.out.println("Found a bot");
-                            else if (value instanceof User)
-                                System.out.println("Found a user");
-                            else
-                                System.out.println("ERROR!");
-
                             accounts.addClient(optionalClient.getValue());
                         }
                     });
