@@ -9,7 +9,17 @@ import cbp.clients.exceptions.InvalidPasswordException;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Michael Mitchell
+ */
 public class AddClientTab extends JPanel {
+
+    /**
+     * Single constructor to create the tab
+     * @param accounts The accounts object that we need to reference to add users to
+     * @see cbp.clients.Client
+     * @see cbp.clients.Accounts
+     */
     public AddClientTab(Accounts accounts) {
         super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -216,6 +226,12 @@ public class AddClientTab extends JPanel {
         this.add(clientTabCards, constraints);
     }
 
+    /**
+     * Utility method to create a JLabel
+     * @see javax.swing.JLabel
+     * @param content The content for the JLabel
+     * @return The JLabel
+     */
     private JLabel createLabel(String content) {
         return new JLabel(content);
     }

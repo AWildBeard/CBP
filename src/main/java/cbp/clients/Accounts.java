@@ -8,53 +8,110 @@ import java.util.OptionalInt;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+/**
+ * @author Michael Mitchell
+ */
 public class Accounts {
+    /**
+     * Company name and Company address data
+     */
     private String companyName,
         companyAddress;
 
+    /**
+     * Constant to indicate if a client was found
+     */
     private static final int NOTFOUND = -1;
 
+    /**
+     * The inner data structure to hold the clients.
+     */
     private ArrayList<Client> clients;
 
+    /**
+     * Default constructor
+     */
     public Accounts() {
         setCompanyName("");
         setCompanyAddress("");
         clients = new ArrayList<>();
     }
 
+    /**
+     * Simple constructor to establish an empty accounts class
+     * @param companyName The name of the company
+     * @param companyAddress The address of the company
+     */
     public Accounts(String companyName, String companyAddress) {
         setCompanyName(companyName);
         setCompanyAddress(companyAddress);
         this.clients = new ArrayList<>();
     }
 
+    /**
+     * Constructor that allows taking in a relatively unlimited number of Clients
+     * @see cbp.clients.Client
+     * @param companyName The name of the company
+     * @param companyAddress The address of the company
+     * @param clients The @see cbp.clients.Client to add as initial clients to the accounts object
+     */
     public Accounts(String companyName, String companyAddress, Client... clients) {
         setCompanyName(companyName);
         setCompanyAddress(companyAddress);
         this.clients = new ArrayList<>(Arrays.asList(clients));
     }
 
+    /**
+     * Constructor that allows taking in a stream of clients to create add clients to the Accounts object
+     * @see cbp.clients.Client
+     * @see java.util.stream.Stream
+     * @param companyName The name of the company
+     * @param companyAddress The address of the company
+     * @param clients A stream of clients
+     */
     public Accounts(String companyName, String companyAddress, Stream<Client> clients) {
         setCompanyName(companyName);
         setCompanyAddress(companyAddress);
         this.clients = new ArrayList<>(clients.collect(Collectors.toList()));
     }
 
+    /**
+     * Constructor that allows taking in an already formed java.util.ArrayList to create the Accounts object
+     * @see cbp.clients.Client
+     * @see java.util.ArrayList
+     * @param companyName The name of the company
+     * @param companyAddress The address of the company
+     * @param clients An already formed arraylist to base the Accounts class off of
+     */
     public Accounts(String companyName, String companyAddress, ArrayList<Client> clients) {
         setCompanyName(companyName);
         setCompanyAddress(companyAddress);
         this.clients = clients;
     }
 
-    // Utility
+    /**
+     * Private utility method to make code semantics better
+     * @param client The client to test
+     * @return True if the Client is a User
+     */
     private boolean clientIsAUser(Client client) {
         return client instanceof User;
     }
 
+    /**
+     * Private utility method to make code semantics better
+     * @param client The client to test
+     * @return True if the Client is a Bot
+     */
     private boolean clientIsABot(Client client) {
         return client instanceof Bot;
     }
 
+    /**
+     * Public accessor to used to determine if a Client is in the Accounts store
+     * @param name The name of the Client to test for. This will be the file name field for a Bot
+     * @return True if the Client was found. False otherwise.
+     */
     public boolean hasClient(final String name) {
         return getClient(name) != null;
     }
@@ -81,6 +138,11 @@ public class Accounts {
         return NOTFOUND;
     }
 
+    /**
+     * Add a client
+     * @see cbp.clients.Client
+     * @param client The client to add to the account store
+     */
     public void addClient(Client client) {
         if (clientIsAUser(client) && !hasClient(((User)client).getUserName())) // Is the client a user?
             this.clients.add(client);
@@ -105,24 +167,43 @@ public class Accounts {
     }
 
     // Mutators
+
+    /**
+     * Mutator to set the company name
+     * @param newName The new name of the company
+     */
     public void setCompanyName(String newName) {
         this.companyName = newName;
     }
 
+    /**
+     * Mutator to set the company Address
+     * @param companyAddress The new company Address
+     */
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
     }
 
     // Accessors
+
+    /**
+     * Accessor for the companies name
+     * @return The string representation of the company
+     */
     public String getCompanyName() {
         return this.companyName;
     }
 
+    /**
+     * Public accessor for the companies Address
+     * @return The string representation of the companies address
+     */
     public String getCompanyAddress() {
         return this.companyAddress;
     }
 
     /**
+     * @see cbp.clients.Client
      * @param name The username of the user to find
      * @return The user if the user was found. null otherwise.
      */
@@ -141,6 +222,9 @@ public class Accounts {
         return null;
     }
 
+    /**
+     * @return The string representation of the accounts class. Includes Clients and Bots nicely formatted.
+     */
     public String toString() {
         StringBuilder userString = new StringBuilder(),
             botString = new StringBuilder();

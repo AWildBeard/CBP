@@ -1,5 +1,8 @@
 package cbp.clients.exceptions;
 
+/**
+ * @author Michael Mitchell
+ */
 public class InvalidPasswordException extends Exception {
 
     public InvalidPasswordException() {}

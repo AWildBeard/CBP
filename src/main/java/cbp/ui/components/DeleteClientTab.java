@@ -5,7 +5,16 @@ import cbp.clients.Accounts;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Michael Mitchell
+ */
 public class DeleteClientTab extends JPanel {
+
+    /**
+     * Single constructor to create the Delete Client Tab
+     * @param accounts The accounts object to remove clients from
+     * @see cbp.clients.Accounts
+     */
     public DeleteClientTab(Accounts accounts) {
         super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();

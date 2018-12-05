@@ -8,7 +8,16 @@ import cbp.clients.User;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Michael Mitchell
+ */
 public class FindClientTab extends JPanel {
+
+    /**
+     * Single constructor to create the Find Client Tab
+     * @param accounts The accounts object to retrieve clients from
+     * @see cbp.clients.Accounts
+     */
     public FindClientTab(Accounts accounts) {
         super(new GridBagLayout());
 

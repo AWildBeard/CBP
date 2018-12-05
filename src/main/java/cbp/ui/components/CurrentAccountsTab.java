@@ -11,7 +11,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * @author Michael Mitchelll
+ */
 public class CurrentAccountsTab extends JPanel {
+
+    /**
+     * Single constructor to create the Current Accounts tab
+     * @param accounts The accounts object to retrieve the Clients from
+     * @see cbp.clients.Client
+     * @see cbp.clients.Accounts
+     */
     public CurrentAccountsTab(Accounts accounts) {
         super(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();

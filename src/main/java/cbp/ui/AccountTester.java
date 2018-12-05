@@ -9,17 +9,31 @@ import cbp.ui.components.FindClientTab;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Michael Mitchell
+ */
 public class AccountTester extends JFrame {
+
+    /**
+     * The main tabbed scene for the Window
+     */
     private JTabbedPane mainScene;
+
+    /**
+     * The accounts object that stores all Clients
+     */
     private static Accounts accounts;
 
     public static void main(String[] args) {
         accounts = new Accounts();
         AccountTester mainStage = new AccountTester();
 
-        mainStage.setVisible(true);
+        mainStage.setVisible(true); // Display the scene
     }
 
+    /**
+     * Constructor to create the scene
+     */
     public AccountTester() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 600);
@@ -31,17 +45,5 @@ public class AccountTester extends JFrame {
         mainScene.addTab("Current Accounts", new CurrentAccountsTab(accounts));
 
         this.add(mainScene);
-    }
-
-    private JComponent createFiller(String filler) {
-        JLabel label = new JLabel(filler);
-        label.setHorizontalAlignment(JLabel.CENTER);
-
-        JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout(1, 1));
-
-        panel.add(label);
-
-        return panel;
     }
 }
