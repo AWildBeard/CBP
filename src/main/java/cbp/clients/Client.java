@@ -145,7 +145,15 @@ public class Client {
     public void setClearPassword(String clearPassword) throws InvalidPasswordException {
         // Will short circuit before causing any trouble in goodPassword
         if (clearPassword != null) {
-            goodPassword(clearPassword);
+            try {
+                goodPassword(clearPassword);
+            } catch (InvalidPasswordException e) {
+                // Do nothing
+            } finally {
+                this.clearPassword = "";
+                this.encryptedPassword = "";
+                // If an exception was thrown, we'll return here
+            }
             this.clearPassword = clearPassword;
             setEncryptedPassword(clearPassword);
         }
