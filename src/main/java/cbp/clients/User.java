@@ -106,6 +106,6 @@ public class User extends Client {
      */
     public String toString() {
         return String.format(toStringFormat, this.fullName,
-                this.userName, this.deptCode) + super.toString() + "\n";
+                this.userName, this.deptCode) + super.toString();
     }
 }
